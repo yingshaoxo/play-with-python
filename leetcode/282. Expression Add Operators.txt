@@ -1,0 +1,34 @@
+https://leetcode.com/problems/expression-add-operators/
+
+
+Timeout
+
+
+```python
+class Solution:
+    def addOperators(self, num: str, target: int) -> List[str]:
+        # 2023.8.30 1:50
+        self.possible_operation_list = ['+', '-', '*']
+        self.possible_expression_list = []
+        def get_unique_expression(source_text: str, previous_expression: str):
+            if len(source_text) == 0:
+                previous_expression = previous_expression[1:].rstrip("+-*")
+                if eval(previous_expression) == target:
+                    #print(previous_expression)
+                    self.possible_expression_list.append(previous_expression)
+                return
+            for length in range(1, len(source_text)+1):
+                for operator in self.possible_operation_list:
+                    a_number = "".join(source_text[0:length])
+                    if len(a_number) > 1 and a_number.startswith("0"):
+                        continue
+                    get_unique_expression(source_text[length:], previous_expression + operator + a_number)
+
+        get_unique_expression(num, "")
+
+        self.possible_expression_list = list(set(self.possible_expression_list))
+        return self.possible_expression_list
+        # 2023.8.30 2:06
+        # debug until 2:18
+        # time exceeded
+```
